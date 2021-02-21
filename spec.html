@@ -20686,6 +20686,7 @@
         1. Let _classScope_ be NewDeclarativeEnvironment(_env_).
         1. If _classBinding_ is not *undefined*, then
           1. Perform _classScope_.CreateImmutableBinding(_classBinding_, *true*).
+        1. Let _constructorKind_ be ~base~.
         1. If |ClassHeritage_opt| is not present, then
           1. Let _protoParent_ be %Object.prototype%.
           1. Let _constructorParent_ be %Function.prototype%.
@@ -20699,6 +20700,7 @@
             1. Let _constructorParent_ be %Function.prototype%.
           1. Else if IsConstructor(_superclass_) is *false*, throw a *TypeError* exception.
           1. Else,
+            1. Set _constructorKind_ to ~derived~.
             1. Let _protoParent_ be ? Get(_superclass_, *"prototype"*).
             1. If Type(_protoParent_) is neither Object nor Null, throw a *TypeError* exception.
             1. Let _constructorParent_ be _superclass_.
@@ -20715,7 +20717,7 @@
           1. Perform ! MakeClassConstructor(_F_).
           1. Perform ! SetFunctionName(_F_, _className_).
         1. Perform ! MakeConstructor(_F_, *false*, _proto_).
-        1. If |ClassHeritage_opt| is present, set _F_.[[ConstructorKind]] to ~derived~.
+        1. Set _F_.[[ConstructorKind]] to _constructorKind_.
         1. Perform CreateMethodProperty(_proto_, *"constructor"*, _F_).
         1. If |ClassBody_opt| is not present, let _methods_ be a new empty List.
         1. Else, let _methods_ be NonConstructorMethodDefinitions of |ClassBody|.
